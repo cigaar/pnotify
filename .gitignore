@@ -2,5 +2,3 @@
 /libtests/*/node_modules
 /libtests/*/dist
 /vendor/
-/lib/
-/dist/

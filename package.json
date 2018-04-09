@@ -39,7 +39,8 @@
     "build-iife": "node make.js dist -- --format=iife",
     "build-umd": "node make.js dist -- --format=umd",
     "build-es": "node make.js dist -- --format=es",
-    "prepare": "npm run build"
+    "prepare": "npm run lint && npm run build",
+    "lint": "eslint index.html make.js src/ demo/"
   },
   "dependencies": {},
   "devDependencies": {
@@ -50,11 +51,20 @@
     "babel-plugin-transform-object-assign": "^6.22.0",
     "babel-preset-env": "^1.6.1",
     "babel-preset-stage-3": "^6.24.1",
-    "clean-css": "^4.1.9",
+    "clean-css": "^4.1.11",
+    "eslint": "^4.19.1",
+    "eslint-config-semistandard": "^12.0.1",
+    "eslint-config-standard": "^11.0.0",
+    "eslint-plugin-html": "^4.0.2",
+    "eslint-plugin-import": "^2.10.0",
+    "eslint-plugin-node": "^6.0.1",
+    "eslint-plugin-promise": "^3.7.0",
+    "eslint-plugin-react": "^7.7.0",
+    "eslint-plugin-standard": "^3.0.1",
     "shelljs": "^0.8.1",
-    "svelte": "^1.55.0",
-    "uglify-es": "^3.3.9",
-    "uglify-js": "^3.3.10"
+    "svelte": "^1.60.2",
+    "uglify-es": "^3.3.10",
+    "uglify-js": "^3.3.20"
   },
   "peerDependencies": {
     "animate.css": "^3.5.2",

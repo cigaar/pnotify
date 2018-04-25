@@ -1,6 +1,5 @@
-// Not working? Did you `npm install` `npm run build` first?
-
-var PNotify = require('pnotify/lib/umd/PNotify.js').default;
+// Not working? Did you `npm install` first?
+var PNotify = require('pnotify/dist/umd/PNotify').default;
 
 document.getElementById('button1').addEventListener('click', function () {
   PNotify.notice({
@@ -10,14 +9,14 @@ document.getElementById('button1').addEventListener('click', function () {
 });
 
 document.getElementById('button2').addEventListener('click', function () {
-  require('pnotify/lib/umd/PNotifyReference.js');
+  require('pnotify/dist/umd/PNotifyConfirm');
 
   PNotify.notice({
     title: 'Yay!',
     text: 'It works!',
     modules: {
-      Reference: {
-        putThing: true
+      Confirm: {
+        confirm: true
       }
     }
   });

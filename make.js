@@ -7,7 +7,6 @@ require('shelljs/make');
 
 let pnotifySrc = {
   // Main code.
-  'index': 'index.js',
   'core': 'PNotify.html',
   'animate': 'PNotifyAnimate.html',
   'buttons': 'PNotifyButtons.html',
@@ -30,7 +29,6 @@ let pnotifySrc = {
 
 let pnotifyJs = {
   // Main code.
-  'index': 'index.js',
   'core': 'PNotify.js',
   'animate': 'PNotifyAnimate.js',
   'buttons': 'PNotifyButtons.js',
@@ -110,10 +108,6 @@ target.dist = (args) => {
 
 let compileJs = (module, filename, args) => {
   let format = setup(args);
-
-  if (module === 'index' && format === 'iife') {
-    return;
-  }
 
   const srcFilename = 'src/' + filename;
   const dstFilename = 'lib/' + format + '/' + filename.replace(/\.html$/, '.js');
@@ -218,10 +212,6 @@ let compileJs = (module, filename, args) => {
 
 let compressJs = (module, filename, args) => {
   let format = setup(args);
-
-  if (module === 'index' && format === 'iife') {
-    return;
-  }
 
   const srcFilename = 'lib/' + format + '/' + filename;
   const dstFilename = 'dist/' + format + '/' + filename;

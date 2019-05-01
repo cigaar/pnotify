@@ -1,0 +1,128 @@
+<!-- This file is for referencing while you are making a PNotify module. -->
+<script context="module">
+  import { icons } from './PNotifyCore';
+
+  // This is the key you use for registering your module with PNotify.
+  export const key = 'Reference';
+
+  // This if the default values of your options.
+  export const defaults = {
+    // Provide a thing for stuff. Turned off by default.
+    putThing: false,
+    // If you are displaying any text, you should use a labels options to
+    // support internationalization.
+    labels: {
+      text: 'Spin Around'
+    }
+  };
+
+  // This is where you would add any styling or icons classes you are using in your code.
+  Object.assign(icons.bootstrap3, {
+    refresh: 'glyphicon glyphicon-refresh'
+  });
+  Object.assign(icons.fontawesome4, {
+    refresh: 'fa fa-refresh'
+  });
+  Object.assign(icons.fontawesome5, {
+    refresh: 'fas fa-sync'
+  });
+</script>
+
+{#if putThing} <!-- We want to check to make sure the notice should include our thing. -->
+  <!--
+  We're going to create a button that will be appended to the notice.
+  It will be disabled by default, so we can enable it on mouseover.
+  -->
+  <button
+      class="ui-pnotify-action-button ui-pnotify-reference-button {_notice.getStyle('btn')} {_notice.getStyle('btn-secondary')}"
+      type="button"
+      disabled="{!mouseIsIn}"
+      on:click={doSomething}>
+    <i class={_notice.getIcon('refresh')} />&nbsp;{labels.text}
+  </button>
+  <!-- Since our button is floated, we have to add a clearing div. -->
+  <div class="ui-pnotify-reference-clearing" />
+{/if}
+
+<script>
+  import { onMount, createEventDispatcher } from 'svelte';
+
+  const dispatch = createEventDispatcher();
+
+  // The PNotify notice.
+  export let _notice = null;
+
+  // Your options must be exported and set to the defaults.
+  export let putThing = defaults.putThing;
+  export let labels = defaults.labels;
+
+  // Here you can define variables not meant to be exported as options.
+  let mouseIsIn = false;
+
+  // This is the second way to init a module. Because we put markup in the
+  // template, we have to fire this event to tell PNotifyCore that we are ready
+  // to be initialized.
+  onMount(() => {
+    dispatch('init', {
+      // This is optional, and will be called after the DOM is ready and options
+      // have been set.
+      init,
+      // Include these if you need them to run.
+      beforeOpen,
+      afterOpen,
+      beforeClose,
+      afterClose,
+      beforeDestroy,
+      afterDestroy
+    });
+  });
+
+  export function init () {
+    _notice.on('mouseenter', () => mouseIsIn = true);
+    _notice.on('mouseleave', () => mouseIsIn = false);
+  }
+
+  function doSomething () {
+    // Spin the notice around.
+    let curAngle = 0;
+    const timer = setInterval(() => {
+      curAngle += 10;
+      if (curAngle === 360) {
+        curAngle = 0;
+        clearInterval(timer);
+      }
+      _notice.refs.elem.style.transform = 'rotate(' + curAngle + 'deg)';
+    }, 20);
+  }
+
+  // I have nothing to put in these, just showing you that they exist. You
+  // won't need to include them if you aren't using them.
+  function beforeOpen () {
+    // Called before the notice is opened.
+  }
+  function afterOpen () {
+    // Called after the notice is opened.
+  }
+  function beforeClose () {
+    // Called before the notice is closed.
+  }
+  function afterClose () {
+    // Called after the notice is closed.
+  }
+  function beforeDestroy () {
+    // Called before the notice is destroyed.
+  }
+  function afterDestroy () {
+    // Called after the notice is destroyed.
+  }
+</script>
+
+<style>
+  .ui-pnotify-reference-button {
+    float: right;
+  }
+  .ui-pnotify-reference-clearing {
+    clear: right;
+    line-height: 0;
+  }
+</style>

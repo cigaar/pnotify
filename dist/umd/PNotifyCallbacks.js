@@ -1,2 +1,115 @@
-var _typeof="function"==typeof Symbol&&"symbol"==typeof Symbol.iterator?function(t){return typeof t}:function(t){return t&&"function"==typeof Symbol&&t.constructor===Symbol&&t!==Symbol.prototype?"symbol":typeof t};!function(t,e){"object"===("undefined"==typeof exports?"undefined":_typeof(exports))&&"undefined"!=typeof module?module.exports=e(require("./PNotify")):"function"==typeof define&&define.amd?define("PNotifyCallbacks",["./PNotify"],e):t.PNotifyCallbacks=e(PNotify)}(this,function(f){"use strict";function a(t,e,n){var r=t?t.get().modules:e.modules,o=r&&r.Callbacks?r.Callbacks:{};return o[n]?o[n]:function(){return!0}}var r=(f=f&&f.__esModule?f.default:f).prototype.open,o=f.prototype.close;function t(t){!function(t,e){t._handlers=n(),t._slots=n(),t._bind=e._bind,t._staged={},t.options=e,t.root=e.root||t,t.store=e.store||t.root.store,e.root||(t._beforecreate=[],t._oncreate=[],t._aftercreate=[])}(this,t),this._state=i({},t.data),this._intro=!0,this._fragment=(this._state,{c:e,m:e,p:e,d:e}),t.target&&(this._fragment.c(),this._mount(t.target,t.anchor))}function e(){}function i(t,e){for(var n in e)t[n]=e[n];return t}function n(){return Object.create(null)}function s(t){for(;t&&t.length;)t.shift()()}return f.prototype.open=function(){if(!1!==a(this,null,"beforeOpen")(this)){for(var t=arguments.length,e=Array(t),n=0;n<t;n++)e[n]=arguments[n];r.apply(this,e),a(this,null,"afterOpen")(this)}},f.prototype.close=function(t){if(!1!==a(this,null,"beforeClose")(this,t)){for(var e=arguments.length,n=Array(1<e?e-1:0),r=1;r<e;r++)n[r-1]=arguments[r];o.apply(this,[t].concat(n)),a(this,null,"afterClose")(this,t)}},i(t.prototype,{destroy:function(t){this.destroy=e,this.fire("destroy"),this.set=e,this._fragment.d(!1!==t),this._fragment=null,this._state={}},get:function(){return this._state},fire:function(t,e){var n=t in this._handlers&&this._handlers[t].slice();if(!n)return;for(var r=0;r<n.length;r+=1){var o=n[r];if(!o.__calling)try{o.__calling=!0,o.call(this,e)}finally{o.__calling=!1}}},on:function(t,e){var n=this._handlers[t]||(this._handlers[t]=[]);return n.push(e),{cancel:function(){var t=n.indexOf(e);~t&&n.splice(t,1)}}},set:function(t){if(this._set(i({},t)),this.root._lock)return;!function(t){t._lock=!0,s(t._beforecreate),s(t._oncreate),s(t._aftercreate),t._lock=!1}(this.root)},_set:function(t){var e=this._state,n={},r=!1;for(var o in t=i(this._staged,t),this._staged={},t)this._differs(t[o],e[o])&&(n[o]=r=!0);if(!r)return;this._state=i(i({},e),t),this._recompute(n,this._state),this._bind&&this._bind(n,this._state);this._fragment&&(this.fire("state",{changed:n,current:this._state,previous:e}),this._fragment.p(n,this._state),this.fire("update",{changed:n,current:this._state,previous:e}))},_stage:function(t){i(this._staged,t)},_mount:function(t,e){this._fragment[this._fragment.i?"i":"m"](t,e||null)},_differs:function(t,e){return t!=t?e==e:t!==e||t&&"object"===(void 0===t?"undefined":_typeof(t))||"function"==typeof t}}),t.prototype._recompute=e,function(t){function e(t,e){a(null,e,"beforeInit")(e);var n=t(e);return a(n,null,"afterInit")(n),n}t.key="Callbacks",t.getCallbacks=a;var n=f.alert,r=f.notice,o=f.info,i=f.success,s=f.error;f.alert=function(t){return e(n,t)},f.notice=function(t){return e(r,t)},f.info=function(t){return e(o,t)},f.success=function(t){return e(i,t)},f.error=function(t){return e(s,t)},f.modules.Callbacks=t}(t),t});
-//# sourceMappingURL=PNotifyCallbacks.js.map
+var PNotifyCallbacks =
+/******/ (function(modules) { // webpackBootstrap
+/******/ 	// The module cache
+/******/ 	var installedModules = {};
+/******/
+/******/ 	// The require function
+/******/ 	function __webpack_require__(moduleId) {
+/******/
+/******/ 		// Check if module is in cache
+/******/ 		if(installedModules[moduleId]) {
+/******/ 			return installedModules[moduleId].exports;
+/******/ 		}
+/******/ 		// Create a new module (and put it into the cache)
+/******/ 		var module = installedModules[moduleId] = {
+/******/ 			i: moduleId,
+/******/ 			l: false,
+/******/ 			exports: {}
+/******/ 		};
+/******/
+/******/ 		// Execute the module function
+/******/ 		modules[moduleId].call(module.exports, module, module.exports, __webpack_require__);
+/******/
+/******/ 		// Flag the module as loaded
+/******/ 		module.l = true;
+/******/
+/******/ 		// Return the exports of the module
+/******/ 		return module.exports;
+/******/ 	}
+/******/
+/******/
+/******/ 	// expose the modules object (__webpack_modules__)
+/******/ 	__webpack_require__.m = modules;
+/******/
+/******/ 	// expose the module cache
+/******/ 	__webpack_require__.c = installedModules;
+/******/
+/******/ 	// define getter function for harmony exports
+/******/ 	__webpack_require__.d = function(exports, name, getter) {
+/******/ 		if(!__webpack_require__.o(exports, name)) {
+/******/ 			Object.defineProperty(exports, name, { enumerable: true, get: getter });
+/******/ 		}
+/******/ 	};
+/******/
+/******/ 	// define __esModule on exports
+/******/ 	__webpack_require__.r = function(exports) {
+/******/ 		if(typeof Symbol !== 'undefined' && Symbol.toStringTag) {
+/******/ 			Object.defineProperty(exports, Symbol.toStringTag, { value: 'Module' });
+/******/ 		}
+/******/ 		Object.defineProperty(exports, '__esModule', { value: true });
+/******/ 	};
+/******/
+/******/ 	// create a fake namespace object
+/******/ 	// mode & 1: value is a module id, require it
+/******/ 	// mode & 2: merge all properties of value into the ns
+/******/ 	// mode & 4: return value when already ns object
+/******/ 	// mode & 8|1: behave like require
+/******/ 	__webpack_require__.t = function(value, mode) {
+/******/ 		if(mode & 1) value = __webpack_require__(value);
+/******/ 		if(mode & 8) return value;
+/******/ 		if((mode & 4) && typeof value === 'object' && value && value.__esModule) return value;
+/******/ 		var ns = Object.create(null);
+/******/ 		__webpack_require__.r(ns);
+/******/ 		Object.defineProperty(ns, 'default', { enumerable: true, value: value });
+/******/ 		if(mode & 2 && typeof value != 'string') for(var key in value) __webpack_require__.d(ns, key, function(key) { return value[key]; }.bind(null, key));
+/******/ 		return ns;
+/******/ 	};
+/******/
+/******/ 	// getDefaultExport function for compatibility with non-harmony modules
+/******/ 	__webpack_require__.n = function(module) {
+/******/ 		var getter = module && module.__esModule ?
+/******/ 			function getDefault() { return module['default']; } :
+/******/ 			function getModuleExports() { return module; };
+/******/ 		__webpack_require__.d(getter, 'a', getter);
+/******/ 		return getter;
+/******/ 	};
+/******/
+/******/ 	// Object.prototype.hasOwnProperty.call
+/******/ 	__webpack_require__.o = function(object, property) { return Object.prototype.hasOwnProperty.call(object, property); };
+/******/
+/******/ 	// __webpack_public_path__
+/******/ 	__webpack_require__.p = "";
+/******/
+/******/
+/******/ 	// Load entry module and return exports
+/******/ 	return __webpack_require__(__webpack_require__.s = "./src/PNotifyCallbacks.js");
+/******/ })
+/************************************************************************/
+/******/ ({
+
+/***/ "./PNotifyCore":
+/*!**************************!*\
+  !*** external "PNotify" ***!
+  \**************************/
+/*! no static exports found */
+/*! exports used: default, defaultStack, icons, modules, modulesAppendContainer, modulesPrependContainer, notices, styles */
+/***/ (function(module, exports) {
+
+eval("module.exports = PNotify;\n\n//# sourceURL=webpack://%5Bname%5D/external_%22PNotify%22?");
+
+/***/ }),
+
+/***/ "./src/PNotifyCallbacks.js":
+/*!*********************************!*\
+  !*** ./src/PNotifyCallbacks.js ***!
+  \*********************************/
+/*! no exports provided */
+/*! all exports used */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+eval("__webpack_require__.r(__webpack_exports__);\n/* harmony import */ var _PNotifyCore__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ./PNotifyCore */ \"./PNotifyCore\");\n/* harmony import */ var _PNotifyCore__WEBPACK_IMPORTED_MODULE_0___default = /*#__PURE__*/__webpack_require__.n(_PNotifyCore__WEBPACK_IMPORTED_MODULE_0__);\n\nvar key = 'Callbacks';\n\nfunction getCallback(notice, options, name) {\n  var modules = notice ? notice.modules : options.modules;\n  var cbs = modules && modules.Callbacks ? modules.Callbacks : {};\n  return name in cbs ? cbs[name] : function () {\n    return true;\n  };\n}\n\nvar factory = function factory(args) {\n  getCallback(null, args.props, 'beforeInit')(args.props);\n\n  var notice = _factory(args);\n\n  var _open = notice.open;\n  var _close = notice.close;\n\n  var open = function open() {\n    var ret = getCallback(notice, null, 'beforeOpen')(notice);\n\n    if (ret !== false) {\n      for (var _len = arguments.length, args = new Array(_len), _key = 0; _key < _len; _key++) {\n        args[_key] = arguments[_key];\n      }\n\n      _open.apply(notice, args);\n\n      getCallback(notice, null, 'afterOpen')(notice);\n    }\n  };\n\n  var close = function close(timerHide) {\n    var ret = getCallback(notice, null, 'beforeClose')(notice, timerHide);\n\n    if (ret !== false) {\n      for (var _len2 = arguments.length, args = new Array(_len2 > 1 ? _len2 - 1 : 0), _key2 = 1; _key2 < _len2; _key2++) {\n        args[_key2 - 1] = arguments[_key2];\n      }\n\n      _close.apply(notice, [timerHide].concat(args));\n\n      getCallback(notice, null, 'afterClose')(notice, timerHide);\n    }\n  };\n\n  notice.$set({\n    open: open,\n    close: close\n  });\n  getCallback(notice, null, 'afterInit')(notice);\n  return notice;\n};\n\nvar _factory = _PNotifyCore__WEBPACK_IMPORTED_MODULE_0___default.a.factory;\n\n_PNotifyCore__WEBPACK_IMPORTED_MODULE_0___default.a.factory = function (options) {\n  return factory(options);\n};\n\nvar Component = {}; // Register the module with PNotify.\n\n_PNotifyCore__WEBPACK_IMPORTED_MODULE_0__[\"modules\"][key] = Component;\n\n//# sourceURL=webpack://%5Bname%5D/./src/PNotifyCallbacks.js?");
+
+/***/ })
+
+/******/ });

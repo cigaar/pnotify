@@ -1,0 +1,163 @@
+<script context="module">
+  import { icons } from './PNotifyCore';
+
+  export const key = 'Buttons';
+
+  export const defaults = {
+    // Provide a button for the user to manually close the notice.
+    closer: true,
+    // Only show the closer button on hover.
+    closerHover: true,
+    // Provide a button for the user to manually stick the notice.
+    sticker: true,
+    // Only show the sticker button on hover.
+    stickerHover: true,
+    // The various displayed text, helps facilitating internationalization.
+    labels: {
+      close: 'Close',
+      stick: 'Stick',
+      unstick: 'Unstick'
+    },
+    // The classes to use for button icons. Leave them null to use the classes from the styling you're using.
+    classes: {
+      closer: null,
+      sticker: null,
+      stuck: null,
+      unstuck: null
+    }
+  };
+
+  // Add button icons to icons objects.
+  Object.assign(icons.bootstrap3, {
+    closer: 'glyphicon glyphicon-remove',
+    sticker: 'glyphicon',
+    stuck: 'glyphicon-play',
+    unstuck: 'glyphicon-pause'
+  });
+  Object.assign(icons.fontawesome4, {
+    closer: 'fa fa-times',
+    sticker: 'fa',
+    stuck: 'fa-play',
+    unstuck: 'fa-pause'
+  });
+  Object.assign(icons.fontawesome5, {
+    closer: 'fas fa-times',
+    sticker: 'fas',
+    stuck: 'fa-play',
+    unstuck: 'fa-pause'
+  });
+</script>
+
+{#if _showCloser}
+  <div
+      class="ui-pnotify-closer {(!closerHover || mouseIsIn) ? '' : 'ui-pnotify-buttons-hidden'}"
+      role="button"
+      tabindex="0"
+      title={labels.close}
+      on:click={handleCloserClick}>
+    <span class={_closerClass}></span>
+  </div>
+{/if}
+{#if _showSticker}
+  <div
+      class="ui-pnotify-sticker {(!stickerHover || mouseIsIn) ? '' : 'ui-pnotify-buttons-hidden'}"
+      role="button"
+      aria-pressed={_notice.hide}
+      tabindex="0"
+      title={_notice.hide ? labels.stick : labels.unstick}
+      on:click={handleStickerClick}>
+    <span class="{_stickerClass} {_notice.hide ? _unstuckClass : _stuckClass}"></span>
+  </div>
+{/if}
+
+<script>
+  import { onMount, tick, createEventDispatcher } from 'svelte';
+
+  const dispatch = createEventDispatcher();
+
+  // The PNotify notice.
+  export let _notice = null;
+
+  export let closer = defaults.closer;
+  export let closerHover = defaults.closerHover;
+  export let sticker = defaults.sticker;
+  export let stickerHover = defaults.stickerHover;
+  export let labels = defaults.labels;
+  export let classes = defaults.classes;
+
+  let mouseIsIn = false;
+  let updatingIcon = false;
+
+  // Whether to show the sticker icon.
+  $: _showSticker = sticker && !(_notice && _notice.refs.elem.classList.contains('nonblock'));
+  // Whether to show the closer icon.
+  $: _showCloser = closer && !(_notice && _notice.refs.elem.classList.contains('nonblock'));
+  // These are button icon classes.
+  $: _stickerClass = _notice ? (classes.sticker === null ? _notice.getIcon('sticker') : classes.sticker) : '';
+  $: _stuckClass = _notice ? (classes.stuck === null ? _notice.getIcon('stuck') : classes.stuck) : '';
+  $: _unstuckClass = _notice ? (classes.unstuck === null ? _notice.getIcon('unstuck') : classes.unstuck) : '';
+  $: _closerClass = _notice ? (classes.closer === null ? _notice.getIcon('closer') : classes.closer) : '';
+
+  $: async () => {
+    if (updatingIcon) {
+      return;
+    }
+
+    if (!sticker) {
+      return;
+    }
+
+    // Font Awesome 5 replaces our lovely element with a gross SVG. In
+    // order to make it play nice with Svelte, we have to clear the
+    // element and make it again.
+    const icon = _notice.hide ? classes.sticker : classes.stuck;
+    if (
+      (_notice.icons === 'fontawesome5') ||
+      (typeof icon === 'string' && icon.match(/(^| )fa[srlb]($| )/))
+    ) {
+      sticker = false;
+      updatingIcon = true;
+      await tick();
+      sticker = true;
+      updatingIcon = false;
+    }
+  };
+
+  onMount(() => {
+    dispatch('init', {
+      init
+    });
+  });
+
+  export function init () {
+    _notice.on('mouseenter', () => mouseIsIn = true);
+    _notice.on('mouseleave', () => mouseIsIn = false);
+  }
+
+  function handleStickerClick () {
+    _notice.hide = !_notice.hide;
+  }
+
+  function handleCloserClick () {
+    _notice.close(false);
+    mouseIsIn = false;
+  }
+</script>
+
+<style>
+  .ui-pnotify-closer,
+  .ui-pnotify-sticker {
+    float: right;
+    margin-left: .5em;
+    cursor: pointer;
+  }
+  :global([dir=rtl]) .ui-pnotify-closer,
+  :global([dir=rtl]) .ui-pnotify-sticker {
+    float: left;
+    margin-right: .5em;
+    margin-left: 0;
+  }
+  .ui-pnotify-buttons-hidden {
+    visibility: hidden;
+  }
+</style>
